@@ -1,12 +1,23 @@
 version: '3'
 services:
   nginx:
-    container_name: nginx-plain
+    container_name: nginx
     image: nginx:1.22
     ports:
-     - "80:80"
-     - "443:443"
+      - "80:80"
+      - "443:443"
     volumes:
-     - ${PWD}/data/html:/usr/share/nginx/html
-     - ${PWD}/data/conf.d:/etc/nginx/conf.d
-     - ${PWD}/data/certificate:/etc/certificate
+      - ${PWD}/data/html:/usr/share/nginx/html
+      - ${PWD}/data/conf.d:/etc/nginx/conf.d
+      - ${PWD}/data/certificate:/etc/certificate
+    networks:
+      - proxy
+    deploy:
+      replicas: 2
+      update_config: 
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+networks:
+  proxy:
