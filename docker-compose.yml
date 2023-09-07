@@ -12,3 +12,9 @@ services:
      - ${PWD}/data/html:/usr/share/nginx/html
      - ${PWD}/data/conf.d:/etc/nginx/conf.d
      - ${PWD}/data/certificate:/etc/certificate
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://niq.tw"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
